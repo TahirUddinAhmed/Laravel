@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+// use App\Models\Task;
 
     class Task
     {
@@ -60,18 +61,21 @@ Route::get('/', function() {
     return redirect()->route('task.index');
 });
 
-Route::get( '/tasks', function () use($tasks) {
+Route::get( '/tasks', function ()  {
+    $tasks = \App\Models\Task::latest()->get();
+
     return view('index', [
         'tasks' => $tasks
     ]);
 })->name('task.index');
 
-Route::get('/tasks/{id}', function($id) use($tasks) {
-    $task = collect($tasks)->firstWhere('id', $id);
+Route::get('/tasks/{id}', function($id)  {
+    $task = \App\Models\Task::findOrFail($id);
 
-    if(!$task) {
-        abort(Response::HTTP_NOT_FOUND);
-    }
+    // Instead this you can use findOrFail()
+    // if(!$task) {
+    //     abort(404, 'Task not found');
+    // }
 
     return view('show', [
         'task' => $task
