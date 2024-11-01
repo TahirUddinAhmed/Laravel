@@ -1,14 +1,14 @@
 <?php
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
-// use App\Models\Task;
+use App\Models\Task;
 
 Route::get('/', function() {
     return redirect()->route('task.index');
 });
 
 Route::get( '/tasks', function ()  {
-    $tasks = \App\Models\Task::latest()->get();
+    $tasks = Task::latest()->get();
 
     return view('index', [
         'tasks' => $tasks
@@ -16,7 +16,7 @@ Route::get( '/tasks', function ()  {
 })->name('task.index');
 
 Route::get('/tasks/{id}', function($id)  {
-    $task = \App\Models\Task::findOrFail($id);
+    $task = Task::findOrFail($id);
 
     // Instead this you can use findOrFail()
     // if(!$task) {
